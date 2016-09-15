@@ -1,5 +1,7 @@
 package com.stem.neuralnetwork;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.zip.GZIPInputStream;
 
 import org.neuroph.core.Layer;
@@ -15,24 +17,38 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		GZIPInputStream gzip;
+		GZIPInputStream gzipIn;
 		
-		SupervisedHebbianNetwork network = new SupervisedHebbianNetwork(785, 10, TransferFunctionType.SIGMOID);
+		byte[] buf = new byte[9912422];
 		
-		DataSet data = new DataSet(785, 10);
-		data.addRow(new DataSetRow());
-		
-		for (int i = 0; i < 3; i++) {
-			Layer layer = new Layer();
+		try {
+			gzipIn = new GZIPInputStream(new FileInputStream("data/test-data/test-images.gz"));
 			
-			for (int j = 0; j < 5; j++) {
-				Neuron neuron = new Neuron();
-				neuron.setInputFunction(new WeightedSum());
-				neuron.setTransferFunction(new Sigmoid());
-				layer.addNeuron(neuron);
-			}
-			network.addLayer(layer);
+			gzipIn.read(buf);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+		
+		for (int i = 0; i < buf.length; i++) {
+			System.out.println(buf[i]);
+		}
+		
+//		SupervisedHebbianNetwork network = new SupervisedHebbianNetwork(785, 10, TransferFunctionType.SIGMOID);
+//		
+//		DataSet data = new DataSet(785, 10);
+//		data.addRow(new DataSetRow());
+//		
+//		for (int i = 0; i < 3; i++) {
+//			Layer layer = new Layer();
+//			
+//			for (int j = 0; j < 5; j++) {
+//				Neuron neuron = new Neuron();
+//				neuron.setInputFunction(new WeightedSum());
+//				neuron.setTransferFunction(new Sigmoid());
+//				layer.addNeuron(neuron);
+//			}
+//			network.addLayer(layer);
+//		}
 	}
 
 }
